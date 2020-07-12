@@ -4,16 +4,19 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+#constantes fisicas
 mi0 = 4e-7 * pi
 eps0 = 8.854187817e-12
 
 c = 299792458
 
+#parametros de iteração
 delta = 0.01
 delta_t = 1.0005*delta/c/sqrt(2)
 
 i_max = j_max = 80
 
+#coeficientes do meio
 coefs = [[{
     'Ca': 1,
 	'Cb': delta_t / (eps0*delta),
@@ -21,11 +24,13 @@ coefs = [[{
 	'Db': delta_t / (mi0*delta)
 } for i in range(0, i_max)] for j in range(0, j_max)]
 
+#cria o gerador
 gen = fdtd_gen(i_max, delta, delta_t, coefs,
                f_meio=lambda t: sin(8e9*t))
 
 Ez, Hx, Hy = next(gen)
 
+#Configura a animação para visualizar os valores retornados pelo gerador
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 8))
 im = ax1.imshow(Ez, interpolation='none', aspect=1, vmin=-1, vmax=1)
 im2 = ax2.imshow(Hx, interpolation='none', aspect=1, vmin=-0.002, vmax=0.002)
